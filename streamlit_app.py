@@ -9,6 +9,8 @@ from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
 from google.auth.transport.requests import Request
+from bs4 import BeautifulSoup
+
 
 # 1. Streamlit UI – collect user inputs
 st.title("🖼️ WordPress Image Checker with Google Drive")
@@ -25,8 +27,8 @@ def extract_filenames_from_post(url):
         featured_src = featured["content"] if featured else ""
 
         images = soup.find_all("img")
-        non_featured = [img for img in images if img.get("src") != featured_src]
-        filenames = [img["src"].split("/")[-1] for img in non_featured if img.get("src")]
+        filenames = [img["src"].split("/")[-1] for img in images if img.get("src")]
+
         return filenames
     except Exception as e:
         st.error(f"Error extracting images: {e}")
